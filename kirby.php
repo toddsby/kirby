@@ -123,6 +123,20 @@ class Kirby {
 
     }
 
+    // add support for wordpress like url routing
+    $routes['wordpress-like'] = array(
+      'pattern' => '(:num)/(:num)/(:num)/(:any)',
+      'method'  => 'GET',
+      'action'  => function($year, $month, $day, $uid) {
+        $dest = kirby::$site->visit('blog/' . $uid);
+        if( $dest->date('Y') === $year && $dest->date('m') === $month && $dest->date('d') === $day ) {
+          kirby::$page = $dest;
+        } else {
+          kirby::$page = kirby::$site->visit('yada');
+        }
+      }
+    );
+
     // all other urls
     $routes['others'] = array(
       'pattern' => '(:all)',
